@@ -1,0 +1,9 @@
+{
+  "name": "odometros-ups",
+  "version": "1.0.0",
+  "description": "Formulario web para registro de odómetros y huella de carbono",
+  "main": "index.html",
+  "dependencies": {
+    "mongodb": "^6.3.0"
+  }
+}
