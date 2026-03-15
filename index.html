@@ -4,29 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UPS Tracker</title>
+    
+    <link rel="icon" href="https://www.ups.com/favicon.ico" type="image/x-icon">
+    
     <style>
         /* Estilos globales */
         body, html { 
             margin: 0; padding: 0; height: 100%; 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background-color: #050505; 
+          
             color: white; 
+            overflow-x: hidden; /* Evita barras de desplazamiento horizontales */
         }
         
-        /* RESTAURADO: Fondo animado con las imágenes */
-        @keyframes slideShow {
-            0% { background-image: url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=2000&q=80'); }
-            33% { background-image: url('https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?auto=format&fit=crop&w=2000&q=80'); }
-            66% { background-image: url('https://images.unsplash.com/photo-1614935151651-0bea6508db6b?auto=format&fit=crop&w=2000&q=80'); }
-            100% { background-image: url('https://images.unsplash.com/photo-1565891741441-64926e441838?auto=format&fit=crop&w=2000&q=80'); }
+        /* NUEVO: Contenedor del Carrusel de Fondo */
+        .carousel-bg {
+            position: fixed; 
+            top: 0; left: 0; 
+            width: 100vw; height: 100vh; 
+            overflow: hidden; 
+            z-index: -1; 
+            background-color: #050505;
         }
-        .login-bg { 
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
-            background-size: cover; 
-            background-position: center; 
-            animation: slideShow 15s infinite;
-            filter: brightness(0.5); /* 0.5 = 50% de brillo. Suficiente para ver la imagen y leer el cuadro */
-            z-index: -1; /* Esto asegura que las imágenes se queden al fondo */
+
+        /* La "cinta" que contiene las imágenes y se desliza */
+        .carousel-track {
+            display: flex;
+            width: 400vw; /* 4 imágenes = 400% del ancho de la pantalla */
+            height: 100vh;
+            animation: slideCarousel 20s cubic-bezier(0.77, 0, 0.175, 1) infinite;
+        }
+
+        /* Las imágenes individuales del carrusel */
+        .carousel-track img {
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover; /* Se asegura de que la imagen llene la pantalla sin deformarse */
+            filter: brightness(0.50); /* Nivel de oscuridad ideal */
+        }
+
+        /* Animación de deslizamiento (Slider) */
+        @keyframes slideCarousel {
+            0%, 20% { transform: translateX(0); }
+            25%, 45% { transform: translateX(-100vw); }
+            50%, 70% { transform: translateX(-200vw); }
+            75%, 95% { transform: translateX(-300vw); }
+            100% { transform: translateX(0); }
         }
         
         /* Contenedor principal RESPONSIVE */
@@ -34,7 +57,7 @@
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
             width: 90%; 
             max-width: 380px; 
-            background-color: rgba(20, 20, 20, 0.85); /* Un poco más transparente para que se luzca el fondo */
+            background-color: rgba(20, 20, 20, 0.85); 
             padding: 30px 25px; 
             border: 1px solid #007bff; 
             box-shadow: 0 10px 30px rgba(0,0,0,0.8); 
@@ -44,7 +67,7 @@
         }
         .logo { height: 50px; margin-bottom: 20px; filter: brightness(0) invert(1); max-width: 100%; }
         
-        /* Estilos de Formulario adaptados para pantallas táctiles */
+        /* Estilos de Formulario */
         .form-group { margin-bottom: 15px; text-align: left; }
         label { display: block; margin-bottom: 5px; font-size: 12px; color: #cccccc; text-transform: uppercase; letter-spacing: 0.5px;}
         select, input { 
@@ -72,7 +95,7 @@
         .success { background-color: rgba(40, 167, 69, 0.2); color: #28a745; border: 1px solid #28a745; }
         .error { background-color: rgba(220, 53, 69, 0.2); color: #dc3545; border: 1px solid #dc3545; }
 
-        /* Footer centrado para celulares */
+        /* Footer */
         .footer { position: fixed; bottom: 15px; left: 0; right: 0; text-align: center; z-index: 1000; text-decoration: none; color: white; opacity: 0.6; }
         .footer h5 { font-weight: 300; letter-spacing: 1px; margin: 0; transition: 0.3s; font-size: 12px;}
         .footer:hover { opacity: 1; }
@@ -86,7 +109,15 @@
     </style>
 </head>
 <body>
-    <div class="login-bg"></div>
+    
+    <div class="carousel-bg">
+        <div class="carousel-track">
+            <img src="https://images.pexels.com/photos/2199293/pexels-photo-2199293.jpeg?auto=compress&cs=tinysrgb&w=2000" alt="Logística 1">
+            <img src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?auto=format&fit=crop&w=2000&q=80" alt="Logística 2">
+            <img src="https://images.unsplash.com/photo-1565891741441-64926e441838?auto=format&fit=crop&w=2000&q=80" alt="Logística 3">
+            <img src="https://images.unsplash.com/photo-1614935151651-0bea6508db6b?auto=format&fit=crop&w=2000&q=80" alt="Logística 4">
+        </div>
+    </div>
 
     <div class="container">
         <img src="https://assets.ups.com/adobe/assets/urn:aaid:aem:30ffa47d-9f45-496d-a58c-cf7349e0daef" alt="UPS Logo" class="logo">
