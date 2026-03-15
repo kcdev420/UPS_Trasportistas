@@ -1,13 +1,12 @@
 const { MongoClient } = require('mongodb');
 
-// Vercel inyectará esta variable de forma segura desde su panel
+// Variable de entorno de Vercel
 const uri = process.env.MONGODB_URI; 
 const options = {};
 
 let client;
 let clientPromise;
 
-// Lógica para mantener la conexión eficiente en un entorno Serverless
 if (!process.env.MONGODB_URI) {
   throw new Error('Falta la variable de entorno MONGODB_URI');
 }
@@ -24,7 +23,6 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 module.exports = async (req, res) => {
-  // Solo permitir peticiones POST (cuando el formulario envía datos)
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Método no permitido' });
   }
@@ -33,37 +31,44 @@ module.exports = async (req, res) => {
     const { sede, placa, mes, kilometraje, fecha_ingreso } = req.body;
 
     const dbClient = await clientPromise;
-    // Conectamos a la misma base de datos y colección que usa tu código en R
     const db = dbClient.db('carbono'); 
     const collection = db.collection('raw');
 
-    // --- TRANSFORMACIÓN DE DATOS ---
-    // Adaptamos lo que viene del formulario a la estructura que espera tu Shiny App
-    const factor_emision = 0.15; // Factor para Transporte Terrestre según tus reglas
+    // --- CÁLCULOS Y TRANSFORMACIÓN ---
+    const factor_emision = 0.15; // Factor de Transporte Terrestre
     const co2e_calculado = kilometraje * factor_emision;
 
-    // Solo extraemos la fecha en formato YYYY-MM-DD para que R as.Date() lo lea bien
-    const fechaFormateada = new Date(fecha_ingreso).toISOString().split('T')[0];
+    // 1. Diccionario traductor de Meses a Fecha (Día 1 de cada mes)
+    const mapaMeses = {
+      "Enero": "01-01", "Febrero": "02-01", "Marzo": "03-01", "Abril": "04-01",
+      "Mayo": "05-01", "Junio": "06-01", "Julio": "07-01", "Agosto": "08-01",
+      "Septiembre": "09-01", "Octubre": "10-01", "Noviembre": "11-01", "Diciembre": "12-01"
+    };
 
+    // 2. Extraemos el año en el que estamos (ej. 2026)
+    const anioActual = new Date(fecha_ingreso).getFullYear(); 
+    
+    // 3. Unimos el año con el mes elegido. (Si eligen "Marzo", queda "2026-03-01")
+    const fechaFormateada = `${anioActual}-${mapaMeses[mes]}`;
+
+    // --- DOCUMENTO A GUARDAR ---
     const documento = {
       facility: sede,
-      date: fechaFormateada,
+      date: fechaFormateada, // ¡Ahora esto alimenta la gráfica correctamente!
       activity_type: "Transporte Terrestre",
       activity_amount: kilometraje,
       uom: "km",
       scope: 3,
       emission_factor: factor_emision,
       co2e_kg: co2e_calculado,
-      uploaded_by: `Web - ${placa}`, // Para que sepas en R que vino de la app web
-      // Campos extra que no rompen R pero te sirven de respaldo
+      uploaded_by: `Web - ${placa}`, 
       mes_referencia: mes,
       placa_vehiculo: placa 
     };
 
-    // Insertamos en MongoDB
+    // Insertamos en la base de datos
     await collection.insertOne(documento);
 
-    // Devolvemos mensaje de éxito al frontend
     res.status(200).json({ message: 'Registro guardado exitosamente' });
     
   } catch (error) {
