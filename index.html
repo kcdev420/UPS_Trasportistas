@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UPS Transportistas</title>
+    <title>Registro de Odómetro - UPS GHG Tracker</title>
     <style>
-        /* Estilos globales y Tema Oscuro Absoluto */
+        /* Estilos globales */
         body, html { 
             margin: 0; padding: 0; height: 100%; 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background-color: #0a0a0a; /* Fallback muy oscuro por si fallan las imágenes */
+            background-color: #0a0a0a; 
             color: white; 
         }
         
-        /* Animación del fondo con imágenes limpias */
+        /* Animación del fondo (Brillo arreglado) */
         @keyframes slideShow {
             0% { background-image: url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=2000&q=80'); }
             33% { background-image: url('https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?auto=format&fit=crop&w=2000&q=80'); }
@@ -24,55 +24,65 @@
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
             background-size: cover; background-position: center; 
             animation: slideShow 15s infinite; 
-            filter: brightness(0.35); /* Oscurece las imágenes para que resalte el cuadro */
+            filter: brightness(0.60); /* Subido a 0.60 para que las imágenes destaquen */
             z-index: -1; 
         }
         
-        /* Contenedor principal (Más oscuro y elegante) */
+        /* Contenedor principal RESPONSIVE */
         .container { 
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-            width: 350px; 
-            background-color: #1a1a1a; /* Gris casi negro, ya no es azul */
-            padding: 30px; 
-            border: 1px solid #007bff; /* Mantiene el borde azul corporativo */
+            width: 90%; /* Se adapta en celulares */
+            max-width: 380px; /* Tamaño máximo en PC */
+            background-color: rgba(26, 26, 26, 0.95); /* Leve transparencia para ver el fondo */
+            padding: 30px 25px; 
+            border: 1px solid #007bff; 
             box-shadow: 0 10px 30px rgba(0,0,0,0.8); 
-            border-radius: 6px; 
+            border-radius: 8px; 
             text-align: center; 
+            box-sizing: border-box; /* Evita que el padding rompa la pantalla */
         }
-        .logo { height: 60px; margin-bottom: 20px; filter: brightness(0) invert(1); }
+        .logo { height: 50px; margin-bottom: 20px; filter: brightness(0) invert(1); max-width: 100%; }
         
-        /* Estilo de los Inputs */
+        /* Estilos de Formulario adaptados para pantallas táctiles */
         .form-group { margin-bottom: 15px; text-align: left; }
-        label { display: block; margin-bottom: 5px; font-size: 13px; color: #aaaaaa; text-transform: uppercase; letter-spacing: 0.5px;}
+        label { display: block; margin-bottom: 5px; font-size: 12px; color: #cccccc; text-transform: uppercase; letter-spacing: 0.5px;}
         select, input { 
-            width: 100%; padding: 12px; 
+            width: 100%; padding: 14px; 
             background-color: #2b2b2b; color: #ffffff; 
-            border: 1px solid #444444; border-radius: 4px; 
-            box-sizing: border-box; font-size: 15px;
+            border: 1px solid #444444; border-radius: 6px; 
+            box-sizing: border-box; 
+            font-size: 16px; /* 16px previene el auto-zoom en iPhone */
         }
         select:focus, input:focus { outline: none; border-color: #007bff; box-shadow: 0 0 5px rgba(0,123,255,0.5);}
         select:disabled { background-color: #1a1a1a; color: #555; cursor: not-allowed; border-color: #333; }
         
         /* Botón */
         button { 
-            width: 100%; padding: 14px; 
+            width: 100%; padding: 15px; 
             background-color: #ffb500; color: black; 
-            font-weight: bold; border: none; border-radius: 4px; 
-            cursor: pointer; margin-top: 15px; font-size: 15px; letter-spacing: 1px; transition: 0.3s; 
+            font-weight: bold; border: none; border-radius: 6px; 
+            cursor: pointer; margin-top: 10px; font-size: 15px; letter-spacing: 1px; transition: 0.3s; 
         }
         button:hover { background-color: #e5a300; transform: translateY(-2px); }
         button:disabled { background-color: #555; color: #888; cursor: not-allowed; transform: none; }
         
         /* Alertas */
-        #mensaje { margin-top: 15px; font-size: 14px; display: none; padding: 12px; border-radius: 4px; font-weight: bold; }
+        #mensaje { margin-top: 15px; font-size: 14px; display: none; padding: 12px; border-radius: 6px; font-weight: bold; }
         .success { background-color: rgba(40, 167, 69, 0.2); color: #28a745; border: 1px solid #28a745; }
         .error { background-color: rgba(220, 53, 69, 0.2); color: #dc3545; border: 1px solid #dc3545; }
 
-        /* Footer */
-        .footer { position: fixed; bottom: 15px; right: 20px; z-index: 1000; text-decoration: none; color: white; opacity: 0.6; }
-        .footer h5 { font-weight: 300; letter-spacing: 1px; margin: 0; transition: 0.3s; font-size: 13px;}
+        /* Footer centrado para celulares */
+        .footer { position: fixed; bottom: 15px; left: 0; right: 0; text-align: center; z-index: 1000; text-decoration: none; color: white; opacity: 0.6; }
+        .footer h5 { font-weight: 300; letter-spacing: 1px; margin: 0; transition: 0.3s; font-size: 12px;}
         .footer:hover { opacity: 1; }
         .footer:hover h5 { color: #ffb500; transform: scale(1.02); }
+
+        /* Ajustes extra para teléfonos muy pequeños */
+        @media (max-width: 360px) {
+            .container { padding: 25px 15px; }
+            .logo { height: 40px; }
+            select, input { padding: 12px; }
+        }
     </style>
 </head>
 <body>
@@ -135,7 +145,6 @@
     </a>
 
     <script>
-        // --- BASE DE DATOS DE PLACAS POR SEDE ---
         const placasPorSede = {
             "GYE": [
                 "GPS0762", "PAB5011", "GB08325", "GBO9509", "GBP7251", "GSH9455", "GSN7162", "GQJ0383", "GSP8152", "GSF1491", 
@@ -163,34 +172,27 @@
             ]
         };
 
-        // --- LÓGICA DE CASCADA (Sede -> Placa) ---
         const selectSede = document.getElementById('sede');
         const selectPlaca = document.getElementById('placa');
 
         selectSede.addEventListener('change', function() {
             const sedeElegida = this.value;
-            
-            // Limpiar las opciones anteriores
             selectPlaca.innerHTML = '<option value="">Seleccionar placa...</option>';
             
             if (sedeElegida && placasPorSede[sedeElegida]) {
-                selectPlaca.disabled = false; // Desbloquear selector
-                
-                // Llenar con las placas correspondientes
+                selectPlaca.disabled = false;
                 placasPorSede[sedeElegida].forEach(placaTexto => {
                     const option = document.createElement('option');
-                    // Extraer solo la placa real (ej: "GBN7346" en lugar de "GBN7346 (Propia)")
                     option.value = placaTexto.split(' ')[0]; 
                     option.textContent = placaTexto;
                     selectPlaca.appendChild(option);
                 });
             } else {
-                selectPlaca.disabled = true; // Volver a bloquear
+                selectPlaca.disabled = true;
                 selectPlaca.innerHTML = '<option value="">Primero selecciona una sede...</option>';
             }
         });
 
-        // --- LÓGICA DE ENVÍO ---
         document.getElementById('odometroForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
@@ -209,7 +211,6 @@
             btn.disabled = true;
 
             try {
-                // Aquí haremos la conexión a Vercel en el siguiente paso
                 const response = await fetch('/api/guardar', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
