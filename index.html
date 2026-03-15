@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UPS Tracker</title>
+    <title>UPS GHG Tracker</title>
     
     <link rel="icon" href="https://www.ups.com/favicon.ico" type="image/x-icon">
     
@@ -12,12 +12,12 @@
         body, html { 
             margin: 0; padding: 0; height: 100%; 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-          
+            background-color: #1a1a1a; 
             color: white; 
-            overflow-x: hidden; /* Evita barras de desplazamiento horizontales */
+            overflow-x: hidden; 
         }
         
-        /* NUEVO: Contenedor del Carrusel de Fondo */
+        /* Contenedor del Carrusel de Fondo */
         .carousel-bg {
             position: fixed; 
             top: 0; left: 0; 
@@ -27,23 +27,20 @@
             background-color: #050505;
         }
 
-        /* La "cinta" que contiene las imágenes y se desliza */
         .carousel-track {
             display: flex;
-            width: 400vw; /* 4 imágenes = 400% del ancho de la pantalla */
+            width: 400vw; 
             height: 100vh;
             animation: slideCarousel 20s cubic-bezier(0.77, 0, 0.175, 1) infinite;
         }
 
-        /* Las imágenes individuales del carrusel */
         .carousel-track img {
             width: 100vw;
             height: 100vh;
-            object-fit: cover; /* Se asegura de que la imagen llene la pantalla sin deformarse */
-            filter: brightness(0.50); /* Nivel de oscuridad ideal */
+            object-fit: cover; 
+            filter: brightness(0.40); 
         }
 
-        /* Animación de deslizamiento (Slider) */
         @keyframes slideCarousel {
             0%, 20% { transform: translateX(0); }
             25%, 45% { transform: translateX(-100vw); }
@@ -101,6 +98,7 @@
         .footer:hover { opacity: 1; }
         .footer:hover h5 { color: #ffb500; transform: scale(1.02); }
 
+        /* REGLA RESPONSIVE FINAL (Para pantallas muy pequeñas) */
         @media (max-width: 360px) {
             .container { padding: 25px 15px; }
             .logo { height: 40px; }
@@ -113,9 +111,9 @@
     <div class="carousel-bg">
         <div class="carousel-track">
             <img src="https://images.pexels.com/photos/2199293/pexels-photo-2199293.jpeg?auto=compress&cs=tinysrgb&w=2000" alt="Logística 1">
-            <img src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?auto=format&fit=crop&w=2000&q=80" alt="Logística 2">
-            <img src="https://images.unsplash.com/photo-1565891741441-64926e441838?auto=format&fit=crop&w=2000&q=80" alt="Logística 3">
-            <img src="https://images.unsplash.com/photo-1614935151651-0bea6508db6b?auto=format&fit=crop&w=2000&q=80" alt="Logística 4">
+            <img src="https://images.pexels.com/photos/1080696/pexels-photo-1080696.jpeg?auto=compress&cs=tinysrgb&w=2000" alt="Logística 2">
+            <img src="https://images.pexels.com/photos/2070485/pexels-photo-2070485.jpeg?auto=compress&cs=tinysrgb&w=2000" alt="Logística 3">
+            <img src="https://images.pexels.com/photos/2800121/pexels-photo-2800121.jpeg?auto=compress&cs=tinysrgb&w=2000" alt="Logística 4">
         </div>
     </div>
 
@@ -128,7 +126,7 @@
                 <select id="sede" required>
                     <option value="">Seleccionar sede...</option>
                     <option value="GYE">Guayaquil (GYE)</option>
-                    <option value="UIO-ITP">Quito (UIO-ITP)</option>
+                    <option value="UIO12">Quito (UIO12)</option>
                     <option value="CUE">Cuenca (CUE)</option>
                     <option value="PVO">PVO</option>
                 </select>
@@ -187,7 +185,7 @@
                 "PAD1913 (Esporádico)", "PFO1593 (Esporádico)", "GBO5004 (Esporádico)", "AAY0116 (Esporádico)", "AFU0919 (Esporádico)", "PZN0313 (Esporádico)", 
                 "GIR0872 (Esporádico)", "GSB3779 (Esporádico)", "GBN8358 (Esporádico)", "POS0267 (Esporádico)", "GLL0927 (Esporádico)", "GBO2418 (Esporádico)"
             ],
-            "UIO-ITP": [
+            "UIO12": [
                 "PAB7359", "PAE3205", "PAE2148", "PCD4438", "PAB6124", "PDP6284", "PBQ7618", "PAE1223", "PAB3042", "GSY1085", 
                 "UAA1265", "IAA1766", "PAB8600", "TAA6743", "TBL5420", "TBJ4630", "PDZ5999", "GST2063", "IBC3856", "IBC8439", 
                 "KAA1441", "PAB1167", "PAE1084", "PAE1034", "PFD3522", "PBX9330", "PFD4943", "PFL3177", "PFI3464", "PCG3409", 
